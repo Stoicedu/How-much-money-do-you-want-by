@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Much Money Do You Want to Have?</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input[type="number"],
+        input[type="range"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        input[type="range"] {
+            padding: 0;
+            height: 8px;
+            background: #e0e0e0;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #667eea;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #667eea;
+            cursor: pointer;
+            border-radius: 50%;
+            border: none;
+        }
+
+        .range-value {
+            text-align: right;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 5px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .results {
+            margin-top: 30px;
+            padding: 25px;
+            background: #f8f9ff;
+            border-radius: 15px;
+            display: none;
+        }
+
+        .results.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-item {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .result-label {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .result-value {
+            color: #333;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .result-value.highlight {
+            color: #667eea;
+            font-size: 28px;
+        }
+
+        .reality-check {
+            margin-top: 20px;
+            padding: 20px;
+            background: #fff3cd;
+            border-radius: 10px;
+            border-left: 4px solid #ffc107;
+        }
+
+        .reality-check h3 {
+            color: #856404;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .reality-check p {
+            color: #856404;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .reality-check.realistic {
+            background: #d4edda;
+            border-left-color: #28a745;
+        }
+
+        .reality-check.realistic h3,
+        .reality-check.realistic p {
+            color: #155724;
+        }
+
+        .reality-check.challenging {
+            background: #f8d7da;
+            border-left-color: #dc3545;
+        }
+
+        .reality-check.challenging h3,
+        .reality-check.challenging p {
+            color: #721c24;
+        }
+
+        .small-text {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .result-value {
+                font-size: 20px;
+            }
+
+            .result-value.highlight {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💰 How Much Money Do You Want?</h1>
+        <p class="subtitle">Plan your financial future with flexible savings goals</p>
+
+        <form id="calculatorForm">
+            <div class="input-group">
+                <label for="currentAge">Your Current Age</label>
+                <input type="number" id="currentAge" value="20" min="1" max="100" required>
+            </div>
+
+            <div class="input-group">
+                <label for="targetAge">Target Age (Goal Age)</label>
+                <input type="number" id="targetAge" value="30" min="1" max="100" required>
+            </div>
+
+            <div class="input-group">
+                <label for="targetAmount">How much money do you want by your target age? ($)</label>
+                <input type="number" id="targetAmount" value="100000" min="1000" step="1000" required>
+            </div>
+
+            <div class="input-group">
+                <label for="interestRate">Annual Interest Rate (%)</label>
+                <input type="range" id="interestRate" min="0" max="50" step="0.1" value="5">
+                <div class="range-value" id="interestRateValue">5.0%</div>
+            </div>
+
+            <button type="submit" class="btn">Calculate My Savings Plan 📊</button>
+        </form>
+
+        <div class="results" id="results">
+            <div class="result-item">
+                <div class="result-label">Years to Save</div>
+                <div class="result-value" id="yearsToSave">-</div>
+            </div>
+
+            <div class="result-item">
+                <div class="result-label">Monthly Savings Required</div>
+                <div class="result-value highlight" id="monthlySavings">-</div>
+                <div class="small-text" id="annualSavings">-</div>
+            </div>
+
+            <div class="result-item">
+                <div class="result-label">Total You'll Deposit</div>
+                <div class="result-value" id="totalDeposit">-</div>
+            </div>
+
+            <div class="result-item">
+                <div class="result-label">Interest Earned</div>
+                <div class="result-value" id="interestEarned">-</div>
+            </div>
+
+            <div class="reality-check" id="realityCheck">
+                <h3>🤔 Is This Goal Realistic?</h3>
+                <p id="realityMessage"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Update interest rate display
+        const interestRateInput = document.getElementById('interestRate');
+        const interestRateValue = document.getElementById('interestRateValue');
+
+        interestRateInput.addEventListener('input', function() {
+            interestRateValue.textContent = parseFloat(this.value).toFixed(1) + '%';
+        });
+
+        // Format number with commas
+        function formatNumber(num) {
+            return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+
+        // Handle form submission
+        document.getElementById('calculatorForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            calculateSavingsPlan();
+        });
+
+        function calculateSavingsPlan() {
+            // Get input values
+            const currentAge = parseInt(document.getElementById('currentAge').value);
+            const targetAge = parseInt(document.getElementById('targetAge').value);
+            const targetAmount = parseFloat(document.getElementById('targetAmount').value);
+            const currentSavings = 0; // Start from zero
+            const annualRate = parseFloat(document.getElementById('interestRate').value) / 100;
+
+            // Validate ages
+            if (currentAge >= targetAge) {
+                alert('Your target age must be greater than your current age!');
+                return;
+            }
+
+            if (targetAge > 100) {
+                alert('Target age must be 100 or less!');
+                return;
+            }
+
+            // Calculate years and months
+            const yearsToSave = targetAge - currentAge;
+            const monthsToSave = yearsToSave * 12;
+            const monthlyRate = annualRate / 12;
+
+            // Calculate monthly payment needed using future value of annuity formula
+            // FV = PV(1+r)^n + PMT * [((1+r)^n - 1) / r]
+            // Solving for PMT: PMT = (FV - PV(1+r)^n) / [((1+r)^n - 1) / r]
+            
+            const futureValueOfCurrentSavings = currentSavings * Math.pow(1 + monthlyRate, monthsToSave);
+            const remainingAmount = targetAmount - futureValueOfCurrentSavings;
+
+            let monthlySavingsNeeded;
+            if (monthlyRate === 0) {
+                // If no interest, simple division
+                monthlySavingsNeeded = remainingAmount / monthsToSave;
+            } else {
+                // With compound interest
+                monthlySavingsNeeded = remainingAmount / (((Math.pow(1 + monthlyRate, monthsToSave) - 1) / monthlyRate));
+            }
+
+            // Handle negative or zero monthly savings
+            if (monthlySavingsNeeded < 0) {
+                monthlySavingsNeeded = 0;
+            }
+
+            // Calculate totals
+            const totalDeposit = currentSavings + (monthlySavingsNeeded * monthsToSave);
+            const interestEarned = targetAmount - totalDeposit;
+            const annualSavingsAmount = monthlySavingsNeeded * 12;
+
+            // Display results
+            document.getElementById('yearsToSave').textContent = yearsToSave + ' years';
+            document.getElementById('monthlySavings').textContent = '$' + formatNumber(monthlySavingsNeeded);
+            document.getElementById('annualSavings').textContent = 'Annual: $' + formatNumber(annualSavingsAmount);
+            document.getElementById('totalDeposit').textContent = '$' + formatNumber(totalDeposit);
+            document.getElementById('interestEarned').textContent = '$' + formatNumber(interestEarned);
+
+            // Show results
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.classList.add('show');
+
+            // Reality check
+            performRealityCheck(monthlySavingsNeeded, annualSavingsAmount, targetAmount, yearsToSave);
+
+            // Scroll to results
+            resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function performRealityCheck(monthlySavings, annualSavings, targetAmount, years) {
+            const realityCheckDiv = document.getElementById('realityCheck');
+            const realityMessage = document.getElementById('realityMessage');
+
+            // Reset classes
+            realityCheckDiv.className = 'reality-check';
+
+            // Average entry-level salary in US (approximate)
+            const averageStartingSalary = 50000;
+            const savingsRatio = annualSavings / averageStartingSalary;
+
+            let message = '';
+            let className = '';
+
+            if (monthlySavings <= 0) {
+                className = 'realistic';
+                message = `Great news! Your current savings are already enough to reach your goal by age 30. You're ahead of the game! 🎉`;
+            } else if (savingsRatio < 0.10) {
+                className = 'realistic';
+                message = `✅ <strong>Very Realistic!</strong> Saving $${formatNumber(monthlySavings)} per month is achievable for most people. This represents about ${(savingsRatio * 100).toFixed(1)}% of an average starting salary. Keep this consistent and you'll reach your goal!`;
+            } else if (savingsRatio < 0.20) {
+                className = 'realistic';
+                message = `✅ <strong>Realistic but Challenging.</strong> Saving $${formatNumber(monthlySavings)} per month (about ${(savingsRatio * 100).toFixed(1)}% of average income) is doable with discipline. You'll need to budget carefully and minimize unnecessary expenses.`;
+            } else if (savingsRatio < 0.35) {
+                className = '';
+                message = `⚠️ <strong>Ambitious Goal!</strong> Saving $${formatNumber(monthlySavings)} per month requires about ${(savingsRatio * 100).toFixed(1)}% of an average salary. This is challenging but possible with:<br>
+                • Living frugally (roommates, cooking at home)<br>
+                • Side income or higher-paying job<br>
+                • Minimal debt and expenses`;
+            } else {
+                className = 'challenging';
+                message = `🚨 <strong>Very Challenging Goal!</strong> Saving $${formatNumber(monthlySavings)} per month (${(savingsRatio * 100).toFixed(1)}% of average income) is extremely difficult. Consider:<br>
+                • Extending your timeline beyond age 30<br>
+                • Reducing your target amount to $${formatNumber(targetAmount * 0.6)}<br>
+                • Focusing on increasing your income significantly<br>
+                • Starting a business or high-income career path`;
+            }
+
+            // Additional context
+            if (monthlySavings > 0) {
+                const dailySavings = monthlySavings / 30;
+                message += `<br><br>💡 <em>That's about $${dailySavings.toFixed(2)} per day - like skipping ${Math.floor(dailySavings / 5)} coffee${Math.floor(dailySavings / 5) !== 1 ? 's' : ''} daily.</em>`;
+            }
+
+            realityCheckDiv.className = 'reality-check ' + className;
+            realityMessage.innerHTML = message;
+        }
+    </script>
+</body>
+</html>
